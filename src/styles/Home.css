@@ -1,0 +1,28 @@
+/* Carousel container styling */
+.carousel-item-content {
+    padding: 15px;
+    background-color: #24cfa6;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .carousel-item img {
+    height: 300px;
+    object-fit: contain;
+    border-radius: 8px;
+    mix-blend-mode: multiply;
+    background-color: transparent;
+  }
+  
+  .carousel-caption h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .card-img-top {
+    object-fit: contain;
+    height: 200px;
+    border-radius: 8px;
+  }
+
+  
