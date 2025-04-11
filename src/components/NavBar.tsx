@@ -14,7 +14,7 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: '#24cfa6' }}>
+    <nav className="navbar navbar-expand-lg navbar-dark py-3" style={{ backgroundColor: '#24cfa6' }}>
       <div className="container">
         <Link className="navbar-brand fw-bold me-4 text-dark" to="/">
           <span>ECOM</span>

@@ -20,11 +20,11 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('https://fakestoreapi.com/products?limit=20'); // Fetching more products for all products section
+        const res = await fetch('https://fakestoreapi.com/products?limit=20');
         const data: Product[] = await res.json();
-        setFeaturedProducts(data.slice(0, 5)); // Featured products
-        setTrendingProducts(data.slice(5, 10)); // Trending products
-        setAllProducts(data); // All products
+        setFeaturedProducts(data.slice(0, 5));
+        setTrendingProducts(data.slice(5, 10));
+        setAllProducts(data);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -33,154 +33,114 @@ const Home: React.FC = () => {
   }, []);
 
   const handleAddToCart = (product: Product) => {
-    // Here, add the logic to add the product to the cart
     console.log('Added to cart:', product);
   };
 
+  const renderProductCard = (product: Product) => (
+    <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={product.id}>
+      <div className="card shadow-sm h-100 d-flex flex-column">
+        <img
+          src={product.image || 'https://via.placeholder.com/300'}
+          className="card-img-top p-3"
+          alt={product.title}
+          style={{ height: '200px', objectFit: 'contain' }}
+        />
+        <div className="card-body d-flex flex-column">
+          <h6 className="card-title fw-bold">
+            {product.title.length > 50 ? product.title.slice(0, 50) + '...' : product.title}
+          </h6>
+
+          <span
+            className="category-badge mb-2 text-uppercase px-2 py-1 rounded"
+            style={{
+              color: '#24cfa6',
+              borderColor: '#24cfa6',
+              fontSize: '12px',
+              width: 'fit-content',
+              border: '1.5px solid',
+            }}
+          >
+            {product.category}
+          </span>
+
+          <p className="fw-bold mb-1" style={{ color: '#25c4a6' }}>
+            NRS {product.price.toFixed(2)}
+          </p>
+
+          <p className="card-text small flex-grow-1">
+            {product.description.length > 80 ? product.description.slice(0, 80) + '...' : product.description}
+          </p>
+
+          <button
+            className="btn btn-dark btn-sm mt-2 w-100"
+            onClick={() => handleAddToCart(product)}
+            style={{ height: '40px' }}
+          >
+            <i className="bi bi-cart-fill me-2"></i> Add to Cart
+          </button>
+          <Link
+            to={`/product/${product.id}`}
+            className="btn w-100 mt-2"
+            style={{
+              backgroundColor: '#24cfa6',
+              color: 'black',
+              height: '40px',
+            }}
+          >
+            <i className="bi bi-eye me-2"></i> View Product
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="container mt-4">
-      {/* Featured Products Carousel */}
-      <h3 className="fw-bold mb-3 text-uppercase">
-        <i className="fas fa-gem"></i> Featured Products
-      </h3>
-      <Carousel>
+      {/* Featured Carousel */}
+      <Carousel interval={3000} pause="hover" indicators controls style={{ backgroundColor: "#25c4a6", borderRadius: "5px" }} className='p-4'>
         {featuredProducts.map((product) => (
           <Carousel.Item key={product.id}>
-            <div className="carousel-item-content text-center">
+            <div className="text-center">
               <img
-                src={product.image || 'https://via.placeholder.com/150'}
+                src={product.image}
                 alt={product.title}
-                className="d-block w-100"
-                style={{ height: '300px', objectFit: 'contain' }}
+                className="d-block mx-auto"
+                style={{ maxHeight: '350px', objectFit: 'contain', margin: '0 auto' }}
               />
-              <Carousel.Caption>
-                <h5>{product.title}</h5>
-                <p>{product.description.slice(0, 60)}...</p>
+              <Carousel.Caption className="bg-dark bg-opacity-50 rounded p-3">
+                <h5 className="fw-bold text-light">
+                  {product.title.length > 50 ? product.title.slice(0, 50) + '...' : product.title}
+                </h5>
+
+                <p className="text-light small">
+                  {product.description.length > 80
+                    ? product.description.slice(0, 80) + '...'
+                    : product.description}
+                </p>
+
               </Carousel.Caption>
             </div>
           </Carousel.Item>
         ))}
       </Carousel>
 
-      {/* Trending Products Section */}
+      {/* Trending Section */}
       <div className="mt-5">
         <h4 className="fw-bold mb-3 text-uppercase">
-          <i className="fas fa-fire-alt"></i> Trending Products
+          <i className="fas fa-fire-alt me-2"></i> Trending Products
         </h4>
-        <div className="row g-4">
-          {trendingProducts.map((product) => (
-            <div className="col-sm-6 col-md-4 col-lg-3" key={product.id}>
-              <div className="card shadow-sm h-100" style={{ width: '100%' }}>
-                <img
-                  src={product.image || 'https://via.placeholder.com/300'}
-                  className="card-img-top p-3"
-                  alt={product.title}
-                  style={{ height: '200px', objectFit: 'contain' }}
-                />
-                <div className="card-body d-flex flex-column">
-                  <h6 className="card-title fw-bold">{product.title.slice(0, 50)}...</h6>
-                  <div
-                    className="category-badge"
-                    style={{
-                      borderColor: '#24cfa6',
-                      color: '#24cfa6',
-                      borderRadius: '5px',
-                      borderWidth: '2px',
-                      padding: '5px 10px',
-                      fontSize: '12px',
-                      marginBottom: '8px',
-                      width: 'fit-content',
-                      border: '0.1px solid',
-                    }}
-                  >
-                    {product.category}
-                  </div>
-                  <p className="fw-bold mb-1" style={{ color: '#24cfa6' }}>NRS {product.price.toFixed(2)}</p>
-                  <p className="card-text small flex-grow-1">{product.description.slice(0, 60)}...</p>
-                  <button
-                    className="btn btn-dark btn-sm mt-2 w-100"
-                    onClick={() => handleAddToCart(product)}  // Add to cart logic
-                    style={{ height: '40px' }} // Adjust the height of the button
-                  >
-                    <i className="bi bi-cart-fill me-2"></i> Add to Cart
-                  </button>
-                  <Link
-                    to={`/product/${product.id}`}
-                    className="btn w-100 mt-2"
-                    style={{
-                      backgroundColor: '#24cfa6',
-                      color: '#fff',
-                      height: '40px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <i className="bi bi-eye me-2"></i> View Product
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="row">
+          {trendingProducts.map(renderProductCard)}
         </div>
       </div>
 
       {/* All Products Section */}
       <div className="mt-5">
         <h4 className="fw-bold mb-3 text-uppercase">
-          <i className="fas fa-boxes"></i> All Products
+          <i className="fas fa-boxes me-2"></i> All Products
         </h4>
-        <div className="row g-4">
-          {allProducts.map((product) => (
-            <div className="col-sm-6 col-md-4 col-lg-3" key={product.id}>
-              <div className="card shadow-sm h-100" style={{ width: '100%' }}>
-                <img
-                  src={product.image || 'https://via.placeholder.com/300'}
-                  className="card-img-top p-3"
-                  alt={product.title}
-                  style={{ height: '200px', objectFit: 'contain' }}
-                />
-                <div className="card-body d-flex flex-column">
-                  <h6 className="card-title fw-bold">{product.title.slice(0, 50)}...</h6>
-                  <div
-                    className="category-badge"
-                    style={{
-                      borderColor: '#24cfa6',
-                      color: '#24cfa6',
-                      borderRadius: '5px',
-                      borderWidth: '2px',
-                      padding: '5px 10px',
-                      fontSize: '12px',
-                      marginBottom: '8px',
-                      width: 'fit-content',
-                      border: '0.1px solid',
-                    }}
-                  >
-                    {product.category}
-                  </div>
-                  <p className="fw-bold mb-1" style={{ color: '#24cfa6' }}>${product.price.toFixed(2)}</p>
-                  <p className="card-text small flex-grow-1">{product.description.slice(0, 60)}...</p>
-                  <button
-                    className="btn btn-dark btn-sm mt-2 w-100"
-                    onClick={() => handleAddToCart(product)}  // Add to cart logic
-                    style={{ height: '40px' }} // Adjust the height of the button
-                  >
-                    <i className="bi bi-cart-fill me-2"></i> Add to Cart
-                  </button>
-                  <Link
-                    to={`/product/${product.id}`}
-                    className="btn w-100 mt-2"
-                    style={{
-                      backgroundColor: '#24cfa6',
-                      color: '#fff',
-                      height: '40px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <i className="bi bi-eye me-2"></i> View Details
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="row">
+          {allProducts.map(renderProductCard)}
         </div>
       </div>
     </div>

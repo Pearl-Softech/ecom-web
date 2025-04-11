@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface Product {
   id: number;
@@ -56,19 +56,55 @@ const Search: React.FC = () => {
                 style={{ height: '200px', objectFit: 'contain' }}
               />
               <div className="card-body d-flex flex-column">
-                <h6 className="card-title fw-bold">{product.title.slice(0, 50)}...</h6>
-                <p className="fw-bold mb-1" style={{ color: '#24cfa6' }}>
-                  ${product.price.toFixed(2)}
+                <h6 className="card-title fw-bold">
+                  {product.title.length > 50 ? product.title.slice(0, 50) + '...' : product.title}
+                </h6>
+
+                <span
+                  className="category-badge mb-2 text-uppercase px-2 py-1 rounded"
+                  style={{
+                    color: '#24cfa6',
+                    borderColor: '#24cfa6',
+                    fontSize: '12px',
+                    width: 'fit-content',
+                    border: '1.5px solid',
+                  }}
+                >
+                  {product.category}
+                </span>
+
+                <p className="fw-bold mb-1" style={{ color: '#25c4a6' }}>
+                  NRS {product.price.toFixed(2)}
                 </p>
+
                 <p className="card-text small flex-grow-1">
-                  {product.description.slice(0, 60)}...
+                  {product.description.length > 80 ? product.description.slice(0, 80) + '...' : product.description}
                 </p>
+
+                <button
+                  className="btn btn-dark btn-sm mt-2 w-100"
+                  onClick={() => handleAddToCart(product)}
+                  style={{ height: '40px' }}
+                >
+                  <i className="bi bi-cart-fill me-2"></i> Add to Cart
+                </button>
+                <Link
+                  to={`/product/${product.id}`}
+                  className="btn w-100 mt-2"
+                  style={{
+                    backgroundColor: '#24cfa6',
+                    color: 'black',
+                    height: '40px',
+                  }}
+                >
+                  <i className="bi bi-eye me-2"></i> View Product
+                </Link>
               </div>
             </div>
           </div>
         ))}
         {query && results.length === 0 && (
-          <p className="text-muted">No results found for "{query}".</p>
+          <p className="text-muted">:No results found for "{query}".</p>
         )}
       </div>
     </div>

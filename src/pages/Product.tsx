@@ -103,67 +103,110 @@ const Product: React.FC = () => {
 
     return (
         <div className="container mt-4">
-            <div className="row">
+            <div className="row d-flex align-items-stretch">
                 {/* Product Image */}
-                <div className="col-md-5" style={{ height: 'object-fit' }}>
-                    <img src={product.image} className="img-fluid mb-3" alt={product.title} style={{ height: '100%', width: '100%' }} />
-                    {product.images?.length > 0 && (
-                        <div className="d-flex gap-2 flex-wrap">
-                            {product.images.map((img, i) => (
-                                <img
-                                    key={i}
-                                    src={img}
-                                    alt="Gallery"
-                                    className="img-thumbnail"
-                                    style={{ width: '80px', cursor: 'pointer' }}
-                                    onClick={() => window.open(img, '_blank')}
-                                />
-                            ))}
-                        </div>
-                    )}
+                <div className="col-md-5 d-flex align-items-stretch">
+                    <div className="product-image-container w-100 p-3 bg-white d-flex flex-column">
+                        <img
+                            src={product.image}
+                            className="img-fluid flex-grow-1"
+                            alt={product.title}
+                            style={{
+                                objectFit: 'contain',
+                                maxHeight: '100%', /* Ensures the image does not exceed container height */
+                                width: '100%', /* Ensures the image takes up full width */
+                            }}
+                        />
+                        {product.images?.length > 0 && (
+                            <div className="d-flex gap-2 flex-wrap">
+                                {product.images.map((img, i) => (
+                                    <img
+                                        key={i}
+                                        src={img}
+                                        alt="Gallery"
+                                        className="img-thumbnail"
+                                        style={{ width: '80px', cursor: 'pointer' }}
+                                        onClick={() => window.open(img, '_blank')}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Product Info */}
-                <div className="col-md-6">
-                    <h2 className="fw-bold">{product.title}</h2>
-                    <p style={{ color: '#24cfa6', border: '0.1px solid #24cfa6', width: 'fit-content', padding: '5px 12px', borderRadius: '5px' }}>{product.category}</p>
-                    <p className="fw-bold fs-4" style={{ color: '#24cfa6' }}>NRS {product.price.toFixed(2)}</p>
-                    <p>{product.description}</p>
-                    <p><strong>Listed on:</strong> April 11, 2025</p>
+                <div className="col-md-6 d-flex flex-column justify-content-between">
+                    <div>
+                        <h2 className="fw-bold">{product.title}</h2>
+                        <p style={{ color: '#24cfa6', border: '0.1px solid #24cfa6', width: 'fit-content', padding: '5px 12px', borderRadius: '5px' }}>
+                            {product.category}
+                        </p>
+                        <p className="fw-bold fs-4" style={{ color: '#24cfa6' }}>NRS {product.price.toFixed(2)}</p>
+                        <p>{product.description}</p>
+                        <p><strong>Listed on:</strong> April 11, 2025</p>
 
-                    <div className="mb-3">
-                        <strong>Rating:</strong> {product.rating.rate} / 5 ({product.rating.count} reviews)
+                        <div className="mb-3">
+                            <strong>Rating:</strong> {product.rating.rate} / 5 ({product.rating.count} reviews)
+                        </div>
+
+                        <button
+                            className="btn btn-primary fw-bold"
+                            onClick={() => console.log('Add to cart', product)}
+                        >
+                            <FaCartPlus className="me-2" /> Add to Cart
+                        </button>
                     </div>
-
-                    <button
-                        className="btn btn-primary fw-bold"
-                        onClick={() => console.log('Add to cart', product)}
-                    >
-                        <FaCartPlus className="me-2" /> Add to Cart
-                    </button>
                 </div>
             </div>
 
             {/* Related Products */}
             <div className="related-products mt-5">
                 <h5 className="fw-bold text-uppercase">
-                    <FaTags className="me-2" />
                     Related Products
                 </h5>
                 <div className="row">
                     {relatedProducts.map((relProd) => (
-                        <div key={relProd.id} className="col-md-3 col-sm-6 mb-3">
-                            <div className="card h-100">
+                        <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={relProd.id}>
+                            <div className="card shadow-sm h-100 d-flex flex-column">
                                 <img
-                                    src={relProd.image}
-                                    className="card-img-top p-4"
+                                    src={relProd.image || 'https://via.placeholder.com/300'}
+                                    className="card-img-top p-3"
                                     alt={relProd.title}
-                                    style={{ objectFit: 'contain', height: '150px' }}
+                                    style={{ height: '200px', objectFit: 'contain' }}
                                 />
                                 <div className="card-body d-flex flex-column">
-                                    <h6 className="card-title fw-bold">{relProd.title}</h6>
-                                    <p className="card-text" style={{ color: "#24cfa6" }}>NRS {relProd.price.toFixed(2)}</p>
-                                    <button className="btn btn-primary btn-sm mt-auto p-2" onClick={()=>{navigate(`/product/${relProd.id}`)}}>
+                                    <h6 className="card-title fw-bold">
+                                        {product.title.length > 50 ? product.title.slice(0, 50) + '...' : product.title}
+                                    </h6>
+
+                                    <span
+                                        className="category-badge mb-2 text-uppercase px-2 py-1 rounded"
+                                        style={{
+                                            color: '#24cfa6',
+                                            borderColor: '#24cfa6',
+                                            fontSize: '12px',
+                                            width: 'fit-content',
+                                            border: '1.5px solid',
+                                        }}
+                                    >
+                                        {product.category}
+                                    </span>
+
+                                    <p className="fw-bold mb-1" style={{ color: '#25c4a6' }}>
+                                        NRS {product.price.toFixed(2)}
+                                    </p>
+
+                                    <p className="card-text small flex-grow-1">
+                                        {product.description.length > 80 ? product.description.slice(0, 80) + '...' : product.description}
+                                    </p>
+
+                                </div>
+                                <div className="card-footer bg-white border-0">
+                                    <button
+                                        className="btn w-100"
+                                        style={{ backgroundColor: '#24cfa6', color: 'black', height: '40px' }}
+                                        onClick={() => navigate(`/product/${relProd.id}`)}
+                                    >
                                         <i className="bi bi-eye me-2"></i> View Product
                                     </button>
                                 </div>
@@ -176,16 +219,20 @@ const Product: React.FC = () => {
             {/* Customer Reviews */}
             <div className="mt-5">
                 <h5 className="fw-bold text-uppercase">
-                    <i className="fa-solid fa-star"></i>
-                    {" " + "Customer Reviews"}
+                    Customer Reviews
                 </h5>
                 {reviews.length > 0 ? (
                     reviews.map((rev) => (
-                        <div key={rev.id} className="border p-3 mb-2 rounded d-flex align-items-start gap-3">
-                            <img src={rev.profilePic} alt={rev.name} className="rounded-circle" width="50" height="50" />
+                        <div key={rev.id} className="p-3 mb-3 bg-light rounded shadow-sm d-flex align-items-start gap-3">
+                            <img src={rev.profilePic} alt={rev.name} className="rounded-circle border" width="60" height="60" />
                             <div>
-                                <strong>{rev.name}</strong> – <span className="text-warning">{'★'.repeat(rev.rating)}</span>
-                                <p className="mb-1">{rev.comment}</p>
+                                <div className="d-flex align-items-center gap-2">
+                                    <strong className="me-2">{rev.name}</strong>
+                                    <div className="text-warning">
+                                        {'★'.repeat(rev.rating)}{'☆'.repeat(5 - rev.rating)}
+                                    </div>
+                                </div>
+                                <p className="mb-0 mt-2">{rev.comment}</p>
                             </div>
                         </div>
                     ))
@@ -195,23 +242,36 @@ const Product: React.FC = () => {
             </div>
 
             {/* Add Review */}
-            <div className="add-review mt-4">
-                <h5 className="fw-bold text-uppercase">
-                    Add a Review
-                </h5>
+            <div className="add-review mt-4 bg-light p-4 rounded shadow-sm">
+                <h5 className="fw-bold text-uppercase mb-3">Add a Review</h5>
+
                 <div className="mb-3">
-                    <label className="form-label">Rating</label>
+                    <label className="form-label fw-semibold">Rating</label>
                     <select className="form-select" value={newRating} onChange={(e) => setNewRating(Number(e.target.value))}>
                         {[5, 4, 3, 2, 1].map((val) => (
-                            <option key={val} value={val}>{val}</option>
+                            <option key={val} value={val}>{val} Star{val > 1 && 's'}</option>
                         ))}
                     </select>
                 </div>
+
                 <div className="mb-3">
-                    <label className="form-label">Comment</label>
-                    <textarea className="form-control" rows={3} value={newComment} onChange={(e) => setNewComment(e.target.value)} />
+                    <label className="form-label fw-semibold">Comment</label>
+                    <textarea
+                        className="form-control"
+                        rows={10}
+                        placeholder="Write your review here..."
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                    />
                 </div>
-                <button className="btn btn-primary" onClick={handleAddReview}>Submit Review</button>
+
+                <button
+                    className="btn btn-primary fw-bold px-4"
+                    onClick={handleAddReview}
+                    disabled={newComment.trim() === ''}
+                >
+                    Submit Review
+                </button>
             </div>
         </div>
     );

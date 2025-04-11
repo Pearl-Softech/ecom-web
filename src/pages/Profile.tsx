@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
-import { FaUserEdit, FaLock, FaTrash, FaCogs } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaUserEdit, FaLock, FaTrash } from 'react-icons/fa';
 
 const Profile: React.FC = () => {
   const [formData, setFormData] = useState({
     fullName: 'John Doe',
     email: 'john@example.com',
     phone: '9800000000',
-    image: 'https://i.pravatar.cc/150?img=3', // placeholder avatar
-    notifications: true,
-    language: 'English',
-    theme: 'Light',
+    image: 'https://i.pravatar.cc/150?img=56',
   });
 
   const [editing, setEditing] = useState(false);
@@ -37,14 +33,13 @@ const Profile: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage('Profile updated successfully!');
+    setMessage('✅ Profile updated successfully!');
     setEditing(false);
     setTimeout(() => setMessage(''), 3000);
   };
 
   const handleDeleteAccount = () => {
-    // Call backend API for deleting account
-    setMessage('Your account has been deleted.');
+    setMessage('⚠️ Your account has been deleted.');
     setShowDeleteConfirmation(false);
   };
 
@@ -52,99 +47,94 @@ const Profile: React.FC = () => {
     <div className="container my-5">
       <div className="row justify-content-center">
         <div className="col-lg-8">
-          <div className="card shadow-sm border-0 p-4">
-            <div className="row">
-              {/* Profile Picture */}
-              <div className="col-md-4 text-center">
+          {/* Profile Info */}
+          <div className="card p-4">
+            <div className="row align-items-center">
+              <div className="col-md-4 text-center mb-3 mb-md-0">
                 <img
                   src={formData.image}
                   alt="Profile"
-                  className="rounded-circle img-fluid mb-3"
+                  className="rounded-circle img-fluid border border-3"
                   style={{ width: '150px', height: '150px', objectFit: 'cover' }}
                 />
                 {editing && (
-                  <div className="mb-3">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className="form-control"
-                    />
-                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="form-control mt-3"
+                  />
                 )}
               </div>
 
-              {/* Profile Form */}
               <div className="col-md-8">
-                <h3 className="fw-bold mb-3">
-                  <FaUserEdit className="me-2 text-primary" />
-                  Profile Information
-                </h3>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h4 className="fw-bold mb-0">
+                    <FaUserEdit className="me-2 text-primary" />
+                    Profile Info
+                  </h4>
+                  {!editing && (
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => setEditing(true)}
+                    >
+                      Edit
+                    </button>
+                  )}
+                </div>
 
-                {message && <div className="alert alert-success">{message}</div>}
+                {message && (
+                  <div className="alert alert-success py-2 px-3">{message}</div>
+                )}
 
                 <form onSubmit={handleSubmit}>
-                  {/* Full Name */}
-                  <div className="mb-3">
-                    <label className="form-label">Full Name</label>
+                  <div className="mb-2">
+                    <label className="form-label mb-1">Full Name</label>
                     <input
                       type="text"
                       name="fullName"
-                      className="form-control"
                       value={formData.fullName}
                       onChange={handleChange}
                       disabled={!editing}
+                      className="form-control"
                     />
                   </div>
 
-                  {/* Email */}
-                  <div className="mb-3">
-                    <label className="form-label">Email</label>
+                  <div className="mb-2">
+                    <label className="form-label mb-1">Email</label>
                     <input
                       type="email"
                       name="email"
-                      className="form-control"
                       value={formData.email}
                       onChange={handleChange}
                       disabled={!editing}
+                      className="form-control"
                     />
                   </div>
 
-                  {/* Phone */}
                   <div className="mb-3">
-                    <label className="form-label">Phone Number</label>
+                    <label className="form-label mb-1">Phone</label>
                     <input
                       type="tel"
                       name="phone"
-                      className="form-control"
                       value={formData.phone}
                       onChange={handleChange}
                       disabled={!editing}
+                      className="form-control"
                     />
                   </div>
 
-                  {/* Action Buttons */}
-                  {editing ? (
-                    <div className="d-flex justify-content-between">
-                      <button type="submit" className="btn btn-success px-4">
+                  {editing && (
+                    <div className="d-flex justify-content-end gap-2">
+                      <button type="submit" className="btn btn-primary px-4">
                         Save
                       </button>
                       <button
                         type="button"
-                        className="btn btn-outline-secondary"
+                        className="btn btn-outline-primary"
                         onClick={() => setEditing(false)}
                       >
                         Cancel
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="text-end">
-                      <button
-                        type="button"
-                        className="btn btn-primary px-4"
-                        onClick={() => setEditing(true)}
-                      >
-                        Edit Profile
                       </button>
                     </div>
                   )}
@@ -153,78 +143,24 @@ const Profile: React.FC = () => {
             </div>
           </div>
 
-          {/* User Preferences */}
-          <div className="card shadow-sm border-0 mt-4 p-4">
-            <h4 className="fw-bold mb-3">
-              <FaCogs className="me-2 text-primary" />
-              User Preferences
-            </h4>
-
-            <form>
-              {/* Notification Preference */}
-              <div className="form-check mb-3">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="notifications"
-                  checked={formData.notifications}
-                  onChange={(e) => setFormData({ ...formData, notifications: e.target.checked })}
-                />
-                <label className="form-check-label" htmlFor="notifications">
-                  Receive Notifications
-                </label>
-              </div>
-
-              {/* Language Preference */}
-              <div className="mb-3">
-                <label className="form-label">Language</label>
-                <select
-                  name="language"
-                  className="form-select"
-                  value={formData.language}
-                  onChange={handleChange}
-                >
-                  <option value="English">English</option>
-                  <option value="Spanish">Spanish</option>
-                  <option value="French">French</option>
-                  <option value="German">German</option>
-                </select>
-              </div>
-
-              {/* Theme Preference */}
-              <div className="mb-3">
-                <label className="form-label">Theme</label>
-                <select
-                  name="theme"
-                  className="form-select"
-                  value={formData.theme}
-                  onChange={handleChange}
-                >
-                  <option value="Light">Light</option>
-                  <option value="Dark">Dark</option>
-                </select>
-              </div>
-            </form>
-          </div>
-
           {/* Change Password */}
-          <div className="card shadow-sm border-0 mt-4 p-4">
-            <h4 className="fw-bold mb-3">
-              <FaLock className="me-2 text-primary" />
+          <div className="card mt-4 p-4">
+            <h5 className="fw-bold mb-3">
+              <FaLock className="me-2 text-warning" />
               Change Password
-            </h4>
+            </h5>
 
             <form>
-              <div className="mb-3">
-                <label className="form-label">Current Password</label>
+              <div className="mb-2">
+                <label className="form-label mb-1">Current Password</label>
+                <input type="password" className="form-control" />
+              </div>
+              <div className="mb-2">
+                <label className="form-label mb-1">New Password</label>
                 <input type="password" className="form-control" />
               </div>
               <div className="mb-3">
-                <label className="form-label">New Password</label>
-                <input type="password" className="form-control" />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Confirm New Password</label>
+                <label className="form-label mb-1">Confirm New Password</label>
                 <input type="password" className="form-control" />
               </div>
               <button type="submit" className="btn btn-warning px-4">
@@ -234,16 +170,16 @@ const Profile: React.FC = () => {
           </div>
 
           {/* Delete Account */}
-          <div className="card shadow-sm border-0 mt-4 p-4">
-            <h4 className="fw-bold mb-3 text-danger">
+          <div className="card mt-4 p-4">
+            <h5 className="fw-bold text-danger mb-2">
               <FaTrash className="me-2" />
               Delete Account
-            </h4>
-
-            <p className="text-danger">This action is permanent and cannot be undone.</p>
-
+            </h5>
+            <p className="text-danger small">
+              This action is irreversible. Your data will be permanently deleted.
+            </p>
             <button
-              className="btn btn-danger px-4"
+              className="btn btn-danger"
               onClick={() => setShowDeleteConfirmation(true)}
             >
               Delete Account
@@ -251,10 +187,10 @@ const Profile: React.FC = () => {
 
             {showDeleteConfirmation && (
               <div className="alert alert-danger mt-3">
-                <strong>Are you sure you want to delete your account?</strong>
-                <div className="mt-2">
+                <p className="mb-2 fw-bold">Are you sure you want to delete your account?</p>
+                <div className="d-flex gap-2">
                   <button
-                    className="btn btn-danger me-2"
+                    className="btn btn-danger"
                     onClick={handleDeleteAccount}
                   >
                     Yes, Delete
