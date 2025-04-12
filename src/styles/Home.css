@@ -1,28 +1,65 @@
-/* Carousel container styling */
-.carousel-item-content {
-    padding: 15px;
-    background-color: #24cfa6;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .carousel-item img {
-    height: 300px;
-    object-fit: contain;
-    border-radius: 8px;
-    mix-blend-mode: multiply;
-    background-color: transparent;
-  }
-  
-  .carousel-caption h5 {
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
-  .card-img-top {
-    object-fit: contain;
-    height: 200px;
-    border-radius: 8px;
+.carousel,
+.carousel-inner,
+.carousel-item {
+  background-color: #25c4a6 !important;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px; /* Ensure enough height for all slides */
+}
+
+.carousel-item img {
+  max-height: 350px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  background-color: transparent;
+}
+
+/* Ensure Carousel Caption is centered properly */
+.carousel-caption {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  border-radius: 8px;
+  bottom: 20px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .carousel-caption {
+    bottom: 15px; /* Reduce bottom space on mobile */
+    width: 80%; /* Ensure it fits better on smaller screens */
+    padding: 0.8rem; /* Reduce padding for better fit */
   }
 
-  
+  .carousel-caption h5 {
+    font-size: 1.1rem; /* Adjust heading font size */
+  }
+
+  .carousel-caption .btn {
+    font-size: 0.9rem; /* Adjust button size */
+    padding: 0.3rem 0.6rem; /* Make button a bit smaller */
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-caption {
+    width: 90%; /* Even more narrow on very small screens */
+    padding: 0.6rem; /* Smaller padding */
+  }
+
+  .carousel-caption h5 {
+    font-size: 1rem; /* Adjust font size even smaller */
+  }
+
+  .carousel-caption .btn {
+    font-size: 0.8rem; /* Further reduce button font size */
+  }
+}
+

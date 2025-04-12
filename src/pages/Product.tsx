@@ -1,29 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaCartPlus, FaTags } from 'react-icons/fa';
+import { FaCartPlus, FaTrash, FaPaperPlane } from 'react-icons/fa';  // Imported FaPaperPlane
 import '../styles/Product.css';
-
-interface Product {
-    id: number;
-    title: string;
-    image: string;
-    price: number;
-    category: string;
-    description: string;
-    rating: {
-        rate: number;
-        count: number;
-    };
-    images?: string[];
-}
-
-interface Review {
-    id: number;
-    name: string;
-    rating: number;
-    comment: string;
-    profilePic: string;
-}
 
 const Product: React.FC = () => {
     let navigate = useNavigate();
@@ -47,7 +25,6 @@ const Product: React.FC = () => {
 
         if (id) {
             fetchProduct();
-
             setReviews([
                 {
                     id: 1,
@@ -113,8 +90,8 @@ const Product: React.FC = () => {
                             alt={product.title}
                             style={{
                                 objectFit: 'contain',
-                                maxHeight: '100%', /* Ensures the image does not exceed container height */
-                                width: '100%', /* Ensures the image takes up full width */
+                                maxHeight: '100%',
+                                width: '100%',
                             }}
                         />
                         {product.images?.length > 0 && (
@@ -138,12 +115,24 @@ const Product: React.FC = () => {
                 <div className="col-md-6 d-flex flex-column justify-content-between">
                     <div>
                         <h2 className="fw-bold">{product.title}</h2>
-                        <p style={{ color: '#24cfa6', border: '0.1px solid #24cfa6', width: 'fit-content', padding: '5px 12px', borderRadius: '5px' }}>
+                        <p
+                            style={{
+                                color: '#24cfa6',
+                                border: '0.1px solid #24cfa6',
+                                width: 'fit-content',
+                                padding: '5px 12px',
+                                borderRadius: '5px',
+                            }}
+                        >
                             {product.category}
                         </p>
-                        <p className="fw-bold fs-4" style={{ color: '#24cfa6' }}>NRS {product.price.toFixed(2)}</p>
+                        <p className="fw-bold fs-4" style={{ color: '#24cfa6' }}>
+                            NRS {product.price.toFixed(2)}
+                        </p>
                         <p>{product.description}</p>
-                        <p><strong>Listed on:</strong> April 11, 2025</p>
+                        <p>
+                            <strong>Listed on:</strong> April 11, 2025
+                        </p>
 
                         <div className="mb-3">
                             <strong>Rating:</strong> {product.rating.rate} / 5 ({product.rating.count} reviews)
@@ -161,9 +150,7 @@ const Product: React.FC = () => {
 
             {/* Related Products */}
             <div className="related-products mt-5">
-                <h5 className="fw-bold text-uppercase">
-                    Related Products
-                </h5>
+                <h5 className="fw-bold text-uppercase">Related Products</h5>
                 <div className="row">
                     {relatedProducts.map((relProd) => (
                         <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={relProd.id}>
@@ -176,7 +163,7 @@ const Product: React.FC = () => {
                                 />
                                 <div className="card-body d-flex flex-column">
                                     <h6 className="card-title fw-bold">
-                                        {product.title.length > 50 ? product.title.slice(0, 50) + '...' : product.title}
+                                        {relProd.title.length > 50 ? relProd.title.slice(0, 50) + '...' : relProd.title}
                                     </h6>
 
                                     <span
@@ -189,17 +176,18 @@ const Product: React.FC = () => {
                                             border: '1.5px solid',
                                         }}
                                     >
-                                        {product.category}
+                                        {relProd.category}
                                     </span>
 
                                     <p className="fw-bold mb-1" style={{ color: '#25c4a6' }}>
-                                        NRS {product.price.toFixed(2)}
+                                        NRS {relProd.price.toFixed(2)}
                                     </p>
 
                                     <p className="card-text small flex-grow-1">
-                                        {product.description.length > 80 ? product.description.slice(0, 80) + '...' : product.description}
+                                        {relProd.description.length > 80
+                                            ? relProd.description.slice(0, 80) + '...'
+                                            : relProd.description}
                                     </p>
-
                                 </div>
                                 <div className="card-footer bg-white border-0">
                                     <button
@@ -218,13 +206,17 @@ const Product: React.FC = () => {
 
             {/* Customer Reviews */}
             <div className="mt-5">
-                <h5 className="fw-bold text-uppercase">
-                    Customer Reviews
-                </h5>
+                <h5 className="fw-bold text-uppercase">Customer Reviews</h5>
                 {reviews.length > 0 ? (
                     reviews.map((rev) => (
                         <div key={rev.id} className="p-3 mb-3 bg-light rounded shadow-sm d-flex align-items-start gap-3">
-                            <img src={rev.profilePic} alt={rev.name} className="rounded-circle border" width="60" height="60" />
+                            <img
+                                src={rev.profilePic}
+                                alt={rev.name}
+                                className="rounded-circle border"
+                                width="60"
+                                height="60"
+                            />
                             <div>
                                 <div className="d-flex align-items-center gap-2">
                                     <strong className="me-2">{rev.name}</strong>
@@ -242,36 +234,61 @@ const Product: React.FC = () => {
             </div>
 
             {/* Add Review */}
-            <div className="add-review mt-4 bg-light p-4 rounded shadow-sm">
-                <h5 className="fw-bold text-uppercase mb-3">Add a Review</h5>
+            <div className="add-review mt-5 rounded shadow-sm bg-light">
+                <h5 className="fw-bold text-uppercase mb-4 header-bg-black">Add a Review</h5>
 
-                <div className="mb-3">
-                    <label className="form-label fw-semibold">Rating</label>
-                    <select className="form-select" value={newRating} onChange={(e) => setNewRating(Number(e.target.value))}>
-                        {[5, 4, 3, 2, 1].map((val) => (
-                            <option key={val} value={val}>{val} Star{val > 1 && 's'}</option>
-                        ))}
-                    </select>
+                <div className='px-4 pb-4'>
+                    <div className="mb-4">
+                        <label className="form-label fw-semibold">Rating</label>
+                        <div className="d-flex align-items-center">
+                            <select
+                                className="form-select"
+                                value={newRating}
+                                onChange={(e) => setNewRating(Number(e.target.value))}
+                                style={{ maxWidth: '120px' }}
+                            >
+                                {[5, 4, 3, 2, 1].map((val) => (
+                                    <option key={val} value={val}>
+                                        {val} Star{val > 1 && 's'}
+                                    </option>
+                                ))}
+                            </select>
+                            <div className="ms-2 text-warning">
+                                {'★'.repeat(newRating)}{'☆'.repeat(5 - newRating)}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="form-label fw-semibold">Comment</label>
+                        <textarea
+                            className="form-control"
+                            rows={10}
+                            placeholder="Write your review here..."
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="d-flex justify-content-between">
+                        <button
+                            className="btn btn-outline-secondary fw-bold px-4"
+                            onClick={() => setNewComment('')}
+                        >
+                            <FaTrash className="me-2" />
+                            Clear
+                        </button>
+
+                        <button
+                            className="btn btn-primary fw-bold px-4"
+                            onClick={handleAddReview}
+                            disabled={newComment.trim() === ''}
+                        >
+                            <FaPaperPlane className="me-2" />
+                            Submit Review
+                        </button>
+                    </div>
                 </div>
-
-                <div className="mb-3">
-                    <label className="form-label fw-semibold">Comment</label>
-                    <textarea
-                        className="form-control"
-                        rows={10}
-                        placeholder="Write your review here..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                    />
-                </div>
-
-                <button
-                    className="btn btn-primary fw-bold px-4"
-                    onClick={handleAddReview}
-                    disabled={newComment.trim() === ''}
-                >
-                    Submit Review
-                </button>
             </div>
         </div>
     );

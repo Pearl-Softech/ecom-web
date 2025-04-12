@@ -16,4 +16,13 @@
   .related-products .card {
     margin-bottom: 20px;
   }
+
+  /* Header background black for the add review section */
+.header-bg-black {
+  background-color: black;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
   

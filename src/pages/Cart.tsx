@@ -126,7 +126,7 @@ const Cart: React.FC = () => {
 
           {/* Summary & Coupon */}
           <div className="col-lg-4">
-            <div className="card p-3 sticky-top" style={{ top: '80px' }}>
+            <div className="card p-3 sticky-top" style={{ top: '80px', zIndex: 1 }}>
               <h4 className='fw-bold'>Total: NRS {total.toFixed(2)}</h4>
               <div className="mt-3">
                 <h5>Have a coupon?</h5>

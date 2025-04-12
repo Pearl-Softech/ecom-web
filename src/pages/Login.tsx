@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 import LoginSVG from '../assets/images/login-page-img.svg'
 
@@ -113,7 +113,10 @@ const Login: React.FC = () => {
 
                 {/* Link to signup */}
                 <p className="mt-3 text-center">
-                  Don't have an account? <a href="/register">Register here</a>
+                  {"Don't have an account? "}
+                  <Link to={'/register'}>
+                    Register
+                  </Link>
                 </p>
               </form>
             </div>

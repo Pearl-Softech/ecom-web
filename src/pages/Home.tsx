@@ -97,7 +97,14 @@ const Home: React.FC = () => {
   return (
     <div className="container mt-4">
       {/* Featured Carousel */}
-      <Carousel interval={3000} pause="hover" indicators controls style={{ backgroundColor: "#25c4a6", borderRadius: "5px" }} className='p-4'>
+      <Carousel
+        interval={2500}
+        pause="hover"
+        indicators
+        controls
+        style={{ backgroundColor: "#25c4a6", borderRadius: "5px", overflow: "hidden" }}
+        className="p-4"
+      >
         {featuredProducts.map((product) => (
           <Carousel.Item key={product.id}>
             <div className="text-center">
@@ -105,24 +112,45 @@ const Home: React.FC = () => {
                 src={product.image}
                 alt={product.title}
                 className="d-block mx-auto"
-                style={{ maxHeight: '350px', objectFit: 'contain', margin: '0 auto' }}
+                style={{
+                  maxHeight: '350px',
+                  objectFit: 'contain',
+                  margin: '0 auto',
+                  backgroundColor: 'transparent',
+                }}
               />
-              <Carousel.Caption className="bg-dark bg-opacity-50 rounded p-3">
-                <h5 className="fw-bold text-light">
-                  {product.title.length > 50 ? product.title.slice(0, 50) + '...' : product.title}
-                </h5>
+              <Carousel.Caption
+  className="text-center carousel-caption"
+  style={{
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    padding: '1rem',
+    borderRadius: '8px',
+    bottom: '20px', // optional: controls vertical position near bottom
+    maxWidth: '90%',
+  }}
+>
+  <h5 className="fw-bold text-light mb-2">
+    {product.title.length > 50 ? product.title.slice(0, 50) + '...' : product.title}
+  </h5>
+  <Link
+    to={`/product/${product.id}`}
+    className="btn btn-sm"
+    style={{ backgroundColor: '#24cfa6', color: 'black' }}
+  >
+    <i className="bi bi-eye me-1"></i> View Product
+  </Link>
+</Carousel.Caption>
 
-                <p className="text-light small">
-                  {product.description.length > 80
-                    ? product.description.slice(0, 80) + '...'
-                    : product.description}
-                </p>
 
-              </Carousel.Caption>
             </div>
           </Carousel.Item>
+
         ))}
       </Carousel>
+
 
       {/* Trending Section */}
       <div className="mt-5">
