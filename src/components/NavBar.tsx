@@ -63,7 +63,7 @@ const NavBar: React.FC = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <button className="btn bg-dark" type="submit" style={{color:"white"}}>
+            <button className="btn bg-dark" type="submit" style={{ color: "white" }}>
               <i className="bi bi-search"></i>
             </button>
           </form>
@@ -74,10 +74,18 @@ const NavBar: React.FC = () => {
                 <i className="bi bi-house me-1"></i> Home
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link text-dark" to="/cart">
+            <li className="nav-item px-4">
+              <Link className="nav-link text-dark position-relative" to="/cart">
                 <i className="bi bi-cart4 me-1"></i> Cart
+                <span
+                  className="position-absolute start-100 translate-middle badge rounded-pill bg-primary"
+                  style={{ fontSize: '0.6rem' }}
+                >
+                  5
+                  <span className="visually-hidden">items in cart</span>
+                </span>
               </Link>
+
             </li>
             <li className="nav-item dropdown">
               <a
